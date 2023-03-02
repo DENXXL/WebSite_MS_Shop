@@ -14,6 +14,10 @@
 </div>
 
 <div class="container">
+  <p class="text-center fs-1">Все товары</p>
+
+  {% if data|length > 0 %}
+
   <div class="card-deck mb-3 text-center">
     <div class="row">
       {% for el in data %}
@@ -27,13 +31,18 @@
             <ul class="list-unstyled mt-3 mb-4">
               <li>Этот товар экологически безопасен</li>
             </ul>
-            <a href="/buy/{{ el.id }}" class="w-100 btn btn-lg btn-outline-primary">Купить товар</a>
+            <a href="/buy/{{ el.id }}" class=" btn  btn-primary">Купить</a>
+            <a href="/buy/{{ el.id }}/update" class=" btn  btn-warning ">Редактировать</a>
+            <a href="/buy/{{ el.id }}/delete" class=" btn  btn-danger ">Удалить</a>
           </div>
         </div>
       </div>
       {% endfor %}
     </div>
   </div>
+  {% else %}
+  <p>Товары еще не добавлены</p>
+  {% endif %}
 </div>
 
 {% endblock %}

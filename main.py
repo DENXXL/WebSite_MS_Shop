@@ -28,6 +28,18 @@ def about():
     return render_template('about.html')
 
 
+@app.route('/buy/<int:id>/delete')
+def item_delete(id):
+    item = Item.query.get_or_404(id)
+
+    try:
+        db.session.delete(item)
+        db.session.commit()
+        return redirect('/')
+    except:
+        return "При удалении возникла ошибка"
+
+
 @app.route('/buy/<int:id>')
 def item_buy(id):
     item = Item.query.get(id)
@@ -40,6 +52,23 @@ def item_buy(id):
     }
     url = checkout.url(data).get('checkout_url')
     return redirect(url)
+
+
+@app.route('/buy/<int:id>/update', methods=['POST', 'GET'])
+def post_update(id):
+    item = Item.query.get(id)
+    if request.method == "POST":
+        item.title = request.form['title']
+        item.price = request.form['price']
+
+
+        try:
+            db.session.commit()
+            return redirect('/')
+        except:
+            return "Ошибочка вышла :("
+    else:
+        return render_template('item_update.html', item=item)
 
 
 @app.route('/create', methods=['POST', 'GET'])
@@ -58,6 +87,7 @@ def create():
             return "Ошибочка вышла :("
     else:
         return render_template('create.html')
+
 
 if __name__ == "__main__":
     app.run(debug=True)
